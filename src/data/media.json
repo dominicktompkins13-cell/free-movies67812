@@ -1,0 +1,321 @@
+[
+  {
+    "id": "stranger-things",
+    "title": "Stranger Things",
+    "category": "tv-show",
+    "description": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.",
+    "rating": "9.2",
+    "releaseYear": "2022",
+    "duration": "4 Seasons",
+    "genres": ["Sci-Fi", "Drama", "Mystery"],
+    "posterUrl": "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": true,
+    "isTrending": true,
+    "isNewRelease": false,
+    "type": "series",
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Chapter One: The Vanishing of Will Byers",
+            "iframeUrl": "https://www.youtube.com/embed/b9EkMc79ZSU?autoplay=1&mute=1"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Chapter Two: The Weirdo on Maple Street",
+            "iframeUrl": "https://www.youtube.com/embed/R1ZXOOLMJ8s?autoplay=1&mute=1"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "Chapter Three: Holly, Jolly",
+            "iframeUrl": "https://www.youtube.com/embed/2_Y5YF7S1N0?autoplay=1&mute=1"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 2,
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Chapter One: Madmax",
+            "iframeUrl": "https://www.youtube.com/embed/vgS2L7WPIO4?autoplay=1&mute=1"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Chapter Two: Trick or Treat, Freak",
+            "iframeUrl": "https://www.youtube.com/embed/bVLZ6q91vYk?autoplay=1&mute=1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "demon-slayer",
+    "title": "Demon Slayer: Kimetsu no Yaiba",
+    "category": "anime",
+    "description": "A family is attacked by demons and only two members survive - Tanjiro and his sister Nezuko, who is turning into a demon slowly. Tanjiro sets out to become a demon slayer.",
+    "rating": "9.5",
+    "releaseYear": "2023",
+    "duration": "3 Seasons",
+    "genres": ["Action", "Fantasy", "Anime"],
+    "posterUrl": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": true,
+    "isNewRelease": true,
+    "type": "series",
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Cruelty (Zankoku)",
+            "iframeUrl": "https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1&mute=1"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Trainer Sakonji Urokodaki",
+            "iframeUrl": "https://www.youtube.com/embed/tZHeVqgOnks?autoplay=1&mute=1"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 2,
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Flame Hashira Kyojuro Rengoku",
+            "iframeUrl": "https://www.youtube.com/embed/t5yU0mZ_OOk?autoplay=1&mute=1"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Deep Breath",
+            "iframeUrl": "https://www.youtube.com/embed/vyzZ_p_nS0c?autoplay=1&mute=1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "interstellar",
+    "title": "Interstellar",
+    "category": "movie",
+    "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    "rating": "8.7",
+    "releaseYear": "2014",
+    "duration": "2h 49m",
+    "genres": ["Sci-Fi", "Adventure", "Drama"],
+    "posterUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": true,
+    "isNewRelease": false,
+    "type": "movie",
+    "iframeUrl": "https://www.youtube.com/embed/zSWdZVtXT7E?autoplay=1&mute=1"
+  },
+  {
+    "id": "cyberpunk-edgerunners",
+    "title": "Cyberpunk: Edgerunners",
+    "category": "anime",
+    "description": "A street kid trying to survive in a technology and body modification-obsessed city of the future. Having everything to lose, he chooses to stay alive by becoming an edgerunner.",
+    "rating": "8.9",
+    "releaseYear": "2022",
+    "duration": "1 Season",
+    "genres": ["Sci-Fi", "Action", "Cyberpunk"],
+    "posterUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": false,
+    "isNewRelease": true,
+    "type": "series",
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Episode 1: Let You Down",
+            "iframeUrl": "https://www.youtube.com/embed/JtqIas3bYhg?autoplay=1&mute=1"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Episode 2: Like a Boy",
+            "iframeUrl": "https://www.youtube.com/embed/h0K8LbeR_K8?autoplay=1&mute=1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dune-part-two",
+    "title": "Dune: Part Two",
+    "category": "movie",
+    "description": "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+    "rating": "8.8",
+    "releaseYear": "2024",
+    "duration": "2h 46m",
+    "genres": ["Sci-Fi", "Adventure", "Epic"],
+    "posterUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": true,
+    "isTrending": true,
+    "isNewRelease": true,
+    "type": "movie",
+    "iframeUrl": "https://www.youtube.com/embed/Way9Dexny3w?autoplay=1&mute=1"
+  },
+  {
+    "id": "wednesday",
+    "title": "Wednesday",
+    "category": "tv-show",
+    "description": "Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends — and foes — at Nevermore Academy.",
+    "rating": "8.4",
+    "releaseYear": "2022",
+    "duration": "1 Season",
+    "genres": ["Mystery", "Comedy", "Fantasy"],
+    "posterUrl": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": true,
+    "isNewRelease": false,
+    "type": "series",
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Chapter I: Wednesday's Child Is Full of Woe",
+            "iframeUrl": "https://www.youtube.com/embed/Di31ExaK7P4?autoplay=1&mute=1"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Chapter II: Woe Is the Loneliest Number",
+            "iframeUrl": "https://www.youtube.com/embed/Q73SGtua1Fs?autoplay=1&mute=1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "attack-on-titan",
+    "title": "Attack on Titan",
+    "category": "anime",
+    "description": "After his hometown is destroyed and his mother is killed, young Eren Jaeger vows to cleanse the earth of the giant humanoid Titans that have brought humanity to the brink of extinction.",
+    "rating": "9.6",
+    "releaseYear": "2023",
+    "duration": "4 Seasons",
+    "genres": ["Action", "Drama", "Dark Fantasy"],
+    "posterUrl": "https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": true,
+    "isNewRelease": false,
+    "type": "series",
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "To You, in 2000 Years: The Fall of Shiganshina, Part 1",
+            "iframeUrl": "https://www.youtube.com/embed/LHtdkW51_gA?autoplay=1&mute=1"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "That Day: The Fall of Shiganshina, Part 2",
+            "iframeUrl": "https://www.youtube.com/embed/MGRm4IZK1R8?autoplay=1&mute=1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oppenheimer",
+    "title": "Oppenheimer",
+    "category": "movie",
+    "description": "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
+    "rating": "8.9",
+    "releaseYear": "2023",
+    "duration": "3h 0m",
+    "genres": ["Biography", "Drama", "History"],
+    "posterUrl": "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": false,
+    "isNewRelease": true,
+    "type": "movie",
+    "iframeUrl": "https://www.youtube.com/embed/uYPbbksJxIg?autoplay=1&mute=1"
+  },
+  {
+    "id": "the-matrix",
+    "title": "The Matrix Resurrections",
+    "category": "movie",
+    "description": "Return to a world of two realities: one, everyday life; the other, what lies behind it. To find out if his reality is a construct, Thomas Anderson will have to choose to follow the white rabbit once more.",
+    "rating": "6.7",
+    "releaseYear": "2021",
+    "duration": "2h 28m",
+    "genres": ["Sci-Fi", "Action"],
+    "posterUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": false,
+    "isNewRelease": false,
+    "type": "movie",
+    "iframeUrl": "https://www.youtube.com/embed/9ix7TMcY-Y4?autoplay=1&mute=1"
+  },
+  {
+    "id": "spiderman-spiderverse",
+    "title": "Spider-Man: Across the Spider-Verse",
+    "category": "movie",
+    "description": "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence. When the heroes clash on how to handle a new threat, Miles must redefine what it means to be a hero.",
+    "rating": "8.6",
+    "releaseYear": "2023",
+    "duration": "2h 20m",
+    "genres": ["Animation", "Action", "Adventure"],
+    "posterUrl": "https://images.unsplash.com/photo-1635805737707-575885ab0820?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": true,
+    "isNewRelease": false,
+    "type": "movie",
+    "iframeUrl": "https://www.youtube.com/embed/cqGjhVJWtEg?autoplay=1&mute=1"
+  },
+  {
+    "id": "shingeki-trailer",
+    "title": "Attack on Titan: The Final Season Part 3 (Official Trailer)",
+    "category": "trailer",
+    "description": "The ultimate conflict begins. Jaegerists clash with former comrades, while humanity faces the terrifying Rumbling.",
+    "rating": "9.8",
+    "releaseYear": "2023",
+    "duration": "2m 15s",
+    "genres": ["Trailer", "Anime", "Epic"],
+    "posterUrl": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": true,
+    "isNewRelease": true,
+    "type": "movie",
+    "iframeUrl": "https://www.youtube.com/embed/E7Wyt_z9Zto?autoplay=1&mute=1"
+  },
+  {
+    "id": "lucifer-trailer",
+    "title": "Lucifer: Season 6 (Official Trailer)",
+    "category": "trailer",
+    "description": "All bad things must come to an end. Watch the final season of Lucifer on Netflix, where he faces his final challenge.",
+    "rating": "8.2",
+    "releaseYear": "2021",
+    "duration": "2m 20s",
+    "genres": ["Trailer", "Crime", "Fantasy"],
+    "posterUrl": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=400&auto=format&fit=crop",
+    "backdropUrl": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=1200&auto=format&fit=crop",
+    "isFeatured": false,
+    "isTrending": false,
+    "isNewRelease": false,
+    "type": "movie",
+    "iframeUrl": "https://www.youtube.com/embed/69796Y8Y7g4?autoplay=1&mute=1"
+  }
+]

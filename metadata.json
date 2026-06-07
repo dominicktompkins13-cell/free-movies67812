@@ -1,0 +1,6 @@
+{
+  "name": "Streaming Portal",
+  "description": "A premium, Netflix-inspired dark-themed movie, anime, and TV show portal featuring embedded custom players, trailer previews, and episode/season selection utilities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
