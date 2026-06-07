@@ -1,0 +1,1393 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netflix Hub - Stream Anime, TV Shows & Movies</title>
+    <!-- Google Fonts for Editorial Elegance and Tech readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+    
+    <!-- Tailwind CSS Dynamic CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brandRed: '#E50914',
+              secondaryGray: '#1c1c1c',
+              darkBg: '#141414',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Space Grotesk', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Smooth transitions & custom scrollbar adjustments */
+      html {
+        scroll-behavior: smooth;
+      }
+      .scrollbar-none::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-none {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Custom line clamp */
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
+      }
+    </style>
+    <!-- Lucide Icons Library Setup -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="bg-[#141414] text-white selection:bg-[#E50914] selection:text-white min-h-screen flex flex-col font-sans transition-all">
+
+    <!-- NAVIGATION BAR -->
+    <nav id="main-navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-gradient-to-b from-black/80 to-transparent py-5">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
+        <!-- Brand & Nav Actions Links -->
+        <div class="flex items-center space-x-8">
+          <div onclick="setTab('all')" class="flex items-center space-x-1 cursor-pointer select-none group">
+            <span class="text-[#E50914] font-black text-2xl md:text-3xl tracking-tighter hover:scale-105 transition-transform duration-200">
+              NETFLIX<span class="text-white text-xs align-super ml-0.5 font-medium tracking-normal bg-[#E50914] px-1 py-0.5 rounded scale-75">HUB</span>
+            </span>
+          </div>
+
+          <!-- Desktop Links -->
+          <div class="hidden md:flex items-center space-x-6" id="desktop-links">
+            <!-- Dynamic Injection of Links -->
+          </div>
+        </div>
+
+        <!-- Right Side: Interactive Search & Quick Actions -->
+        <div class="flex items-center space-x-4 md:space-x-6">
+          <!-- Animated Search Box -->
+          <div id="search-container" class="flex items-center bg-zinc-900/60 border border-zinc-800 rounded-full py-1.5 px-3 transition-all duration-300 w-10 opacity-70 hover:opacity-100">
+            <i data-lucide="search" class="text-zinc-400 cursor-pointer hover:text-white w-[18px] h-[18px]" onclick="toggleSearchInput()"></i>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Titles, genres..."
+              class="bg-transparent text-sm text-white focus:outline-none ml-2 w-full placeholder-zinc-500 hidden"
+              oninput="handleSearchChange(this.value)"
+            />
+            <button id="search-clear-btn" class="text-zinc-500 hover:text-zinc-300 hidden" onclick="clearSearchInput()">
+              <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Watchlist Quick Access Button -->
+          <button onclick="setTab('favorites')" class="relative p-2 rounded-full cursor-pointer hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white" title="My List" id="watchlist-quick-btn">
+            <i data-lucide="heart" class="w-5 h-5" id="watchlist-icon-heart"></i>
+            <span id="favorites-badge-num" class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold border border-zinc-950 hidden">0</span>
+          </button>
+
+          <!-- User Avatar Profile indicator -->
+          <div class="hidden sm:block">
+            <div class="w-8 h-8 rounded-lg overflow-hidden border border-zinc-800 cursor-pointer hover:border-red-600 transition-colors">
+              <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100&auto=format&fit=crop" alt="Profile" class="w-full h-full object-cover">
+            </div>
+          </div>
+
+          <!-- Mobile Toggle Navigation Drawer -->
+          <button onclick="toggleMobileMenu()" class="md:hidden text-zinc-300 hover:text-white p-1" id="mobile-toggle-btn">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Drawer Panel -->
+      <div id="mobile-drawer" class="md:hidden fixed top-[60px] left-0 w-full h-[calc(100vh-60px)] bg-zinc-950 border-t border-zinc-900 flex-col pt-6 px-6 space-y-4 z-40 hidden shadow-2xl">
+        <!-- Injected Link Elements will go here via code -->
+      </div>
+    </nav>
+
+    <!-- MAIN GRID CONTAINER -->
+    <main class="flex-grow pb-16 pt-0">
+      <div id="main-content-area">
+        <!-- Injected Dynamic Content (either Search Grid, My List favorites page, or standard landing blocks) -->
+      </div>
+    </main>
+
+    <!-- PLAYER / MORE INFO OVERLAY DETAIL MODAL -->
+    <div id="modal-backdrop" class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center bg-black/95 backdrop-blur-md p-2 sm:p-4 md:p-6 select-none hidden">
+      <div id="modal-card" class="relative bg-[#141414] w-full max-w-5xl rounded-sm overflow-hidden border border-zinc-800 shadow-2xl flex flex-col max-h-[92vh]">
+        
+        <!-- Close trigger button -->
+        <button onclick="closeModal()" class="absolute top-4 right-4 z-50 bg-black/85 hover:bg-[#E50914] text-white p-2.5 rounded-full border border-zinc-700 transition-colors focus:outline-none cursor-pointer" title="Close View">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Video player frame component -->
+        <div id="cinema-screen" class="relative w-full aspect-video bg-black border-b border-zinc-900">
+          <iframe
+            id="player-iframe"
+            src=""
+            title="Sleek Cinema Stream"
+            class="w-full h-full object-cover hidden"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+          <div id="player-fallback-view" class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-zinc-900">
+            <i data-lucide="film" class="text-zinc-600 mb-3 animate-pulse w-12 h-12"></i>
+            <p class="text-zinc-400 font-medium">Select an episode or press play to initiate view.</p>
+          </div>
+
+          <!-- HUD Info badge overlay -->
+          <div class="absolute bottom-3 left-3 bg-black/90 backdrop-blur-md px-3.5 py-1.5 rounded-sm border border-zinc-800 text-xs text-zinc-350 pointer-events-none flex items-center space-x-2 shadow-lg">
+            <div class="w-2 h-2 rounded-full bg-[#E50914] animate-ping"></div>
+            <span class="font-extrabold text-white uppercase tracking-wider text-[10px] bg-[#E50914]/30 px-1.5 py-0.2 rounded-sm border border-[#E50914]/20" id="hud-status-match-label">NOW PLAYING</span>
+            <span class="text-zinc-550">|</span>
+            <span class="font-semibold text-zinc-200 truncate max-w-[200px]" id="hud-playing-title-label">Simulated Stream</span>
+          </div>
+        </div>
+
+        <!-- Details Scroll View Content block -->
+        <div class="flex-1 overflow-y-auto p-5 sm:p-8 space-y-8 bg-gradient-to-b from-[#141414] to-[#111] scrollbar-thin scrollbar-thumb-zinc-800">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Left Info Block -->
+            <div class="md:col-span-2 space-y-5">
+              <div class="flex flex-wrap items-center gap-3">
+                <span class="text-green-400 font-black text-sm bg-green-950/40 px-2.5 py-1 rounded border border-green-900/30" id="modal-match-percentage">95% Match</span>
+                <span class="text-zinc-350 text-xs sm:text-sm font-semibold flex items-center space-x-1 bg-[#1aa] px-2.5 py-0.5 rounded-sm border border-zinc-800 h-7" style="background-color: #1c1c1c;">
+                  <i data-lucide="calendar" class="w-3.5 h-3.5 mr-1 text-zinc-500"></i><span id="modal-year-label">2024</span>
+                </span>
+                <span class="text-zinc-355 text-xs sm:text-sm font-semibold flex items-center space-x-1 bg-[#1c1c1c] px-2.5 py-1 rounded-sm border border-zinc-800" id="modal-duration-container">
+                  <i data-lucide="monitor-play" class="w-3.5 h-3.5 mr-1 text-zinc-500"></i><span id="modal-duration-label">2 hours</span>
+                </span>
+                <span class="border border-zinc-700 px-2 py-0.5 text-xs text-zinc-300 font-black rounded-sm uppercase">TV-MA</span>
+                <span class="bg-[#E50914]/10 text-[#E50914] text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-sm border border-[#E50914]/20" id="modal-category-badge">MOVIE</span>
+              </div>
+
+              <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight" id="modal-movie-title-header">STRANGER THINGS</h2>
+              <p class="text-zinc-350 text-sm sm:text-base leading-relaxed font-medium" id="modal-description-body"></p>
+
+              <!-- Actions Controls -->
+              <div class="flex items-center space-x-4 pt-2">
+                <button id="modal-favorites-toggle-btn" class="flex items-center space-x-2 px-5 py-2.5 rounded-sm border font-bold text-sm transition-all cursor-pointer bg-[#222] text-zinc-300 border-[#333]">
+                  <i data-lucide="heart" class="w-4 h-4 mr-1"></i>
+                  <span>Add to My List</span>
+                </button>
+                <div class="text-xs text-zinc-500 flex items-center space-x-1 border border-[#222] px-3 py-2 rounded">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#E50914] mr-1"></i>
+                  <span>Simulated Stream Active</span>
+                </div>
+              </div>
+
+              <!-- Genres Row -->
+              <div class="space-y-1.5 pt-3">
+                <h4 class="text-xs uppercase tracking-widest font-black text-zinc-500">Genres</h4>
+                <div class="flex flex-wrap gap-1.5" id="modal-genres-list"></div>
+              </div>
+            </div>
+
+            <!-- Right Segment (TV/Anime Episodes control helper, if applicable) -->
+            <div class="md:col-span-1 space-y-6" id="modal-right-episode-control-wrapper">
+              <!-- Dynamically populated or hidden -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MAIN SLEEK FOOTER -->
+    <footer class="bg-[#141414] border-t border-zinc-900 py-16 px-6 sm:px-12 mt-auto">
+      <div class="max-w-5xl mx-auto space-y-8 select-none">
+        <div class="text-zinc-500 text-xs font-semibold">
+          Questions? Contact developer support at dominicktompkins13@gmail.com
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs text-zinc-500">
+          <div class="space-y-2.5">
+            <a href="#faq" class="block hover:underline">FAQ</a>
+            <a href="#terms" class="block hover:underline">Investor Relations</a>
+            <a href="#privacy" class="block hover:underline">Privacy Policy</a>
+            <a href="#speed" class="block hover:underline">Speed Test</a>
+          </div>
+          <div class="space-y-2.5">
+            <a href="#help" class="block hover:underline">Help Center</a>
+            <a href="#jobs" class="block hover:underline">Jobs Opportunities</a>
+            <a href="#cookies" class="block hover:underline font-bold">Cookie Preferences</a>
+            <a href="#legal" class="block hover:underline">Legal Notices</a>
+          </div>
+          <div class="space-y-2.5">
+            <a href="#account" class="block hover:underline font-bold">Mock Account</a>
+            <a href="#shop" class="block hover:underline">Netflix Shop</a>
+            <a href="#corp" class="block hover:underline">Corporate Information</a>
+            <a href="#originals" class="block hover:underline text-red-500 font-extrabold">Originals Hub</a>
+          </div>
+          <div class="space-y-2.5">
+            <a href="#media" class="block hover:underline">Media Center</a>
+            <a href="#redeem" class="block hover:underline">Redeem Gift Cards</a>
+            <a href="#contact" class="block hover:underline">Contact Customer Care</a>
+            <a href="#only" class="block hover:underline">Only on Streamify</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-6 border-t border-zinc-900 text-xs text-zinc-650 gap-4">
+          <p>© <span id="footer-year">2026</span> Netflix Hub Applet. Standalone Version. All embedded trailers belong to their respective producers.</p>
+          <div class="flex items-center space-x-2 text-[10px] bg-red-950/20 text-red-500 border border-red-950 px-2.5 py-1 rounded-sm">
+            <span>OFFLINE STANDALONE TEMPLATE READY</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- EMBEDDED REAL MEDIA DATA -->
+    <script>
+      const mediaData = [
+        {
+          "id": "stranger-things",
+          "title": "Stranger Things",
+          "category": "tv-show",
+          "description": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.",
+          "rating": "9.2",
+          "releaseYear": "2022",
+          "duration": "4 Seasons",
+          "genres": ["Sci-Fi", "Drama", "Mystery"],
+          "posterUrl": "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": true,
+          "isTrending": true,
+          "isNewRelease": false,
+          "type": "series",
+          "seasons": [
+            {
+              "seasonNumber": 1,
+              "episodes": [
+                {
+                  "episodeNumber": 1,
+                  "title": "Chapter One: The Vanishing of Will Byers",
+                  "iframeUrl": "https://www.youtube.com/embed/b9EkMc79ZSU?autoplay=1&mute=1"
+                },
+                {
+                  "episodeNumber": 2,
+                  "title": "Chapter Two: The Weirdo on Maple Street",
+                  "iframeUrl": "https://www.youtube.com/embed/R1ZXOOLMJ8s?autoplay=1&mute=1"
+                },
+                {
+                  "episodeNumber": 3,
+                  "title": "Chapter Three: Holly, Jolly",
+                  "iframeUrl": "https://www.youtube.com/embed/2_Y5YF7S1N0?autoplay=1&mute=1"
+                }
+              ]
+            },
+            {
+              "seasonNumber": 2,
+              "episodes": [
+                {
+                  "episodeNumber": 1,
+                  "title": "Chapter One: Madmax",
+                  "iframeUrl": "https://www.youtube.com/embed/vgS2L7WPIO4?autoplay=1&mute=1"
+                },
+                {
+                  "episodeNumber": 2,
+                  "title": "Chapter Two: Trick or Treat, Freak",
+                  "iframeUrl": "https://www.youtube.com/embed/bVLZ6q91vYk?autoplay=1&mute=1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "demon-slayer",
+          "title": "Demon Slayer: Kimetsu no Yaiba",
+          "category": "anime",
+          "description": "A family is attacked by demons and only two members survive - Tanjiro and his sister Nezuko, who is turning into a demon slowly. Tanjiro sets out to become a demon slayer.",
+          "rating": "9.5",
+          "releaseYear": "2023",
+          "duration": "3 Seasons",
+          "genres": ["Action", "Fantasy", "Anime"],
+          "posterUrl": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": true,
+          "isNewRelease": true,
+          "type": "series",
+          "seasons": [
+            {
+              "seasonNumber": 1,
+              "episodes": [
+                {
+                  "episodeNumber": 1,
+                  "title": "Cruelty (Zankoku)",
+                  "iframeUrl": "https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1&mute=1"
+                },
+                {
+                  "episodeNumber": 2,
+                  "title": "Trainer Sakonji Urokodaki",
+                  "iframeUrl": "https://www.youtube.com/embed/tZHeVqgOnks?autoplay=1&mute=1"
+                }
+              ]
+            },
+            {
+              "seasonNumber": 2,
+              "episodes": [
+                {
+                  "episodeNumber": 1,
+                  "title": "Flame Hashira Kyojuro Rengoku",
+                  "iframeUrl": "https://www.youtube.com/embed/t5yU0mZ_OOk?autoplay=1&mute=1"
+                },
+                {
+                  "episodeNumber": 2,
+                  "title": "Deep Breath",
+                  "iframeUrl": "https://www.youtube.com/embed/vyzZ_p_nS0c?autoplay=1&mute=1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "interstellar",
+          "title": "Interstellar",
+          "category": "movie",
+          "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+          "rating": "8.7",
+          "releaseYear": "2014",
+          "duration": "2h 49m",
+          "genres": ["Sci-Fi", "Adventure", "Drama"],
+          "posterUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": true,
+          "isNewRelease": false,
+          "type": "movie",
+          "iframeUrl": "https://www.youtube.com/embed/zSWdZVtXT7E?autoplay=1&mute=1"
+        },
+        {
+          "id": "cyberpunk-edgerunners",
+          "title": "Cyberpunk: Edgerunners",
+          "category": "anime",
+          "description": "A street kid trying to survive in a technology and body modification-obsessed city of the future. Having everything to lose, he chooses to stay alive by becoming an edgerunner.",
+          "rating": "8.9",
+          "releaseYear": "2022",
+          "duration": "1 Season",
+          "genres": ["Sci-Fi", "Action", "Cyberpunk"],
+          "posterUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": false,
+          "isNewRelease": true,
+          "type": "series",
+          "seasons": [
+            {
+              "seasonNumber": 1,
+              "episodes": [
+                {
+                  "episodeNumber": 1,
+                  "title": "Episode 1: Let You Down",
+                  "iframeUrl": "https://www.youtube.com/embed/JtqIas3bYhg?autoplay=1&mute=1"
+                },
+                {
+                  "episodeNumber": 2,
+                  "title": "Episode 2: Like a Boy",
+                  "iframeUrl": "https://www.youtube.com/embed/h0K8LbeR_K8?autoplay=1&mute=1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "dune-part-two",
+          "title": "Dune: Part Two",
+          "category": "movie",
+          "description": "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+          "rating": "8.8",
+          "releaseYear": "2024",
+          "duration": "2h 46m",
+          "genres": ["Sci-Fi", "Adventure", "Epic"],
+          "posterUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": true,
+          "isTrending": true,
+          "isNewRelease": true,
+          "type": "movie",
+          "iframeUrl": "https://www.youtube.com/embed/Way9Dexny3w?autoplay=1&mute=1"
+        },
+        {
+          "id": "wednesday",
+          "title": "Wednesday",
+          "category": "tv-show",
+          "description": "Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends — and foes — at Nevermore Academy.",
+          "rating": "8.4",
+          "releaseYear": "2022",
+          "duration": "1 Season",
+          "genres": ["Mystery", "Comedy", "Fantasy"],
+          "posterUrl": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": true,
+          "isNewRelease": false,
+          "type": "series",
+          "seasons": [
+            {
+              "seasonNumber": 1,
+              "episodes": [
+                {
+                  "episodeNumber": 1,
+                  "title": "Chapter I: Wednesday's Child Is Full of Woe",
+                  "iframeUrl": "https://www.youtube.com/embed/Di31ExaK7P4?autoplay=1&mute=1"
+                },
+                {
+                  "episodeNumber": 2,
+                  "title": "Chapter II: Woe Is the Loneliest Number",
+                  "iframeUrl": "https://www.youtube.com/embed/Q73SGtua1Fs?autoplay=1&mute=1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "attack-on-titan",
+          "title": "Attack on Titan",
+          "category": "anime",
+          "description": "After his hometown is destroyed and his mother is killed, young Eren Jaeger vows to cleanse the earth of the giant humanoid Titans that have brought humanity to the brink of extinction.",
+          "rating": "9.6",
+          "releaseYear": "2023",
+          "duration": "4 Seasons",
+          "genres": ["Action", "Drama", "Dark Fantasy"],
+          "posterUrl": "https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": true,
+          "isNewRelease": false,
+          "type": "series",
+          "seasons": [
+            {
+              "seasonNumber": 1,
+              "episodes": [
+                {
+                  "episodeNumber": 1,
+                  "title": "To You, in 2000 Years: The Fall of Shiganshina, Part 1",
+                  "iframeUrl": "https://www.youtube.com/embed/LHtdkW51_gA?autoplay=1&mute=1"
+                },
+                {
+                  "episodeNumber": 2,
+                  "title": "That Day: The Fall of Shiganshina, Part 2",
+                  "iframeUrl": "https://www.youtube.com/embed/MGRm4IZK1R8?autoplay=1&mute=1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "oppenheimer",
+          "title": "Oppenheimer",
+          "category": "movie",
+          "description": "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
+          "rating": "8.9",
+          "releaseYear": "2023",
+          "duration": "3h 0m",
+          "genres": ["Biography", "Drama", "History"],
+          "posterUrl": "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": false,
+          "isNewRelease": true,
+          "type": "movie",
+          "iframeUrl": "https://www.youtube.com/embed/uYPbbksJxIg?autoplay=1&mute=1"
+        },
+        {
+          "id": "the-matrix",
+          "title": "The Matrix Resurrections",
+          "category": "movie",
+          "description": "Return to a world of two realities: one, everyday life; the other, what lies behind it. To find out if his reality is a construct, Thomas Anderson will have to choose to follow the white rabbit once more.",
+          "rating": "6.7",
+          "releaseYear": "2021",
+          "duration": "2h 28m",
+          "genres": ["Sci-Fi", "Action"],
+          "posterUrl": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": false,
+          "isNewRelease": false,
+          "type": "movie",
+          "iframeUrl": "https://www.youtube.com/embed/9ix7TMcY-Y4?autoplay=1&mute=1"
+        },
+        {
+          "id": "spiderman-spiderverse",
+          "title": "Spider-Man: Across the Spider-Verse",
+          "category": "movie",
+          "description": "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence. When the heroes clash on how to handle a new threat, Miles must redefine what it means to be a hero.",
+          "rating": "8.6",
+          "releaseYear": "2023",
+          "duration": "2h 20m",
+          "genres": ["Animation", "Action", "Adventure"],
+          "posterUrl": "https://images.unsplash.com/photo-1635805737707-575885ab0820?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": true,
+          "isNewRelease": false,
+          "type": "movie",
+          "iframeUrl": "https://www.youtube.com/embed/cqGjhVJWtEg?autoplay=1&mute=1"
+        },
+        {
+          "id": "shingeki-trailer",
+          "title": "Attack on Titan: The Final Season Part 3 (Official Trailer)",
+          "category": "trailer",
+          "description": "The ultimate conflict begins. Jaegerists clash with former comrades, while humanity faces the terrifying Rumbling.",
+          "rating": "9.8",
+          "releaseYear": "2023",
+          "duration": "2m 15s",
+          "genres": ["Trailer", "Anime", "Epic"],
+          "posterUrl": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": true,
+          "isNewRelease": true,
+          "type": "movie",
+          "iframeUrl": "https://www.youtube.com/embed/E7Wyt_z9Zto?autoplay=1&mute=1"
+        },
+        {
+          "id": "lucifer-trailer",
+          "title": "Lucifer: Season 6 (Official Trailer)",
+          "category": "trailer",
+          "description": "All bad things must come to an end. Watch the final season of Lucifer on Netflix, where he faces his final challenge.",
+          "rating": "8.2",
+          "releaseYear": "2021",
+          "duration": "2m 20s",
+          "genres": ["Trailer", "Crime", "Fantasy"],
+          "posterUrl": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=400&auto=format&fit=crop",
+          "backdropUrl": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=1200&auto=format&fit=crop",
+          "isFeatured": false,
+          "isTrending": false,
+          "isNewRelease": false,
+          "type": "movie",
+          "iframeUrl": "https://www.youtube.com/embed/69796Y8Y7g4?autoplay=1&mute=1"
+        }
+      ];
+    </script>
+
+    <!-- CORE STATE ENGINE & INTERACTIVE LOGIC (VANILLA JS) -->
+    <script>
+      // Populate Year in footer dynamically
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+      // Application State
+      const state = {
+        activeTab: 'all',
+        searchQuery: '',
+        favorites: [],
+        selectedMovie: null,
+        isSearchExpanded: false,
+        activeSeasonNumber: 1,
+        activeEpisode: null,
+        mobileMenuOpen: false
+      };
+
+      const navLinks = [
+        { id: 'all', label: 'Home' },
+        { id: 'tv-show', label: 'TV Shows' },
+        { id: 'movie', label: 'Movies' },
+        { id: 'anime', label: 'Anime' },
+        { id: 'trailer', label: 'Trailers' },
+        { id: 'favorites', label: 'My List' }
+      ];
+
+      // Load favorites on state init
+      function loadFavorites() {
+        try {
+          const stored = localStorage.getItem('netflix_favorites');
+          if (stored) {
+            state.favorites = JSON.parse(stored);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        updateBadge();
+      }
+
+      // Toggle Favorites functionality
+      function toggleFavorite(movieId) {
+        if (state.favorites.includes(movieId)) {
+          state.favorites = state.favorites.filter(id => id !== movieId);
+        } else {
+          state.favorites.push(movieId);
+        }
+        localStorage.setItem('netflix_favorites', JSON.stringify(state.favorites));
+        updateBadge();
+        renderSearchOrHome();
+        
+        // If modal open, update button
+        if (state.selectedMovie && state.selectedMovie.id === movieId) {
+          updateModalFavoriteBtn();
+        }
+      }
+
+      function updateBadge() {
+        const count = state.favorites.length;
+        const badges = [document.getElementById('favorites-badge-num')];
+        badges.forEach(b => {
+          if (b) {
+            if (count > 0) {
+              b.textContent = count;
+              b.classList.remove('hidden');
+            } else {
+              b.classList.add('hidden');
+            }
+          }
+        });
+      }
+
+      // Navigation Link Rendering
+      function renderNavigation() {
+        // Desktop nav rendering
+        const desktopContainer = document.getElementById('desktop-links');
+        desktopContainer.innerHTML = '';
+        
+        navLinks.forEach(link => {
+          const isActive = state.activeTab === link.id;
+          const btn = document.createElement('button');
+          btn.className = `text-sm font-medium transition-colors duration-300 relative py-1 flex items-center ${
+            isActive ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
+          }`;
+          btn.onclick = () => setTab(link.id);
+          btn.innerHTML = `
+            <span>${link.label}</span>
+            ${link.id === 'favorites' && state.favorites.length > 0 ? `
+              <span class="ml-1.5 px-1.5 py-0.2 text-[10px] bg-red-600 text-white rounded-full font-bold">
+                ${state.favorites.length}
+              </span>` : ''}
+              ${isActive ? '<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[3px] bg-red-600 rounded-full"></div>' : ''}
+          `;
+          desktopContainer.appendChild(btn);
+        });
+
+        // Mobile nav rendering
+        const mobileContainer = document.getElementById('mobile-drawer');
+        mobileContainer.innerHTML = '';
+        navLinks.forEach(link => {
+          const isActive = state.activeTab === link.id;
+          const btn = document.createElement('button');
+          btn.className = `text-left text-lg font-medium py-2 border-b border-zinc-900 flex justify-between items-center ${
+            isActive ? 'text-red-500' : 'text-zinc-300 hover:text-white'
+          }`;
+          btn.onclick = () => {
+            setTab(link.id);
+            toggleMobileMenu();
+          };
+          btn.innerHTML = `
+            <span>${link.label}</span>
+            ${link.id === 'favorites' && state.favorites.length > 0 ? `
+              <span class="bg-red-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                ${state.favorites.length}
+              </span>` : ''}
+          `;
+          mobileContainer.appendChild(btn);
+        });
+
+        // Add additional guest indicator bottom of mobile list
+        const profileDiv = document.createElement('div');
+        profileDiv.className = 'pt-8 flex items-center space-x-3 text-zinc-400 text-sm';
+        profileDiv.innerHTML = `
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100&auto=format&fit=crop" alt="Profile" class="w-10 h-10 rounded-lg object-cover border border-zinc-800">
+          <div>
+            <p class="text-white font-medium">Guest User</p>
+            <p class="text-xs text-zinc-500">premium subscriber</p>
+          </div>
+        `;
+        mobileContainer.appendChild(profileDiv);
+      }
+
+      function toggleMobileMenu() {
+        state.mobileMenuOpen = !state.mobileMenuOpen;
+        const drawer = document.getElementById('mobile-drawer');
+        const iconContainer = document.getElementById('mobile-toggle-btn');
+        if (state.mobileMenuOpen) {
+          drawer.classList.remove('hidden');
+          drawer.classList.add('flex');
+          iconContainer.innerHTML = '<i data-lucide="x" class="w-6 h-6"></i>';
+        } else {
+          drawer.classList.add('hidden');
+          drawer.classList.remove('flex');
+          iconContainer.innerHTML = '<i data-lucide="menu" class="w-6 h-6"></i>';
+        }
+        lucide.createIcons();
+      }
+
+      // Search Actions
+      function toggleSearchInput() {
+        state.isSearchExpanded = !state.isSearchExpanded;
+        const container = document.getElementById('search-container');
+        const input = document.getElementById('search-input');
+        const clearBtn = document.getElementById('search-clear-btn');
+        if (state.isSearchExpanded || state.searchQuery) {
+          container.className = 'flex items-center bg-zinc-900/60 border border-zinc-800 rounded-full py-1.5 px-3 transition-all duration-300 w-48 md:w-64 opacity-100';
+          input.classList.remove('hidden');
+          input.focus();
+        } else {
+          container.className = 'flex items-center bg-zinc-900/60 border border-zinc-800 rounded-full py-1.5 px-3 transition-all duration-300 w-10 opacity-70 hover:opacity-100';
+          input.classList.add('hidden');
+        }
+      }
+
+      function handleSearchChange(query) {
+        state.searchQuery = query;
+        const clearBtn = document.getElementById('search-clear-btn');
+        if (query) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+        renderSearchOrHome();
+      }
+
+      function clearSearchInput() {
+        state.searchQuery = '';
+        document.getElementById('search-input').value = '';
+        document.getElementById('search-clear-btn').add('hidden');
+        renderSearchOrHome();
+      }
+
+      function setTab(tabId) {
+        state.activeTab = tabId;
+        state.searchQuery = '';
+        document.getElementById('search-input').value = '';
+        renderNavigation();
+        renderSearchOrHome();
+        
+        // Reset Search Input Bar if empty
+        const container = document.getElementById('search-container');
+        const input = document.getElementById('search-input');
+        container.className = 'flex items-center bg-zinc-900/60 border border-zinc-800 rounded-full py-1.5 px-3 transition-all duration-300 w-10 opacity-70 hover:opacity-100';
+        input.classList.add('hidden');
+        state.isSearchExpanded = false;
+        
+        lucide.createIcons();
+      }
+
+      // Scroll Event handling for navbar background transformation
+      window.addEventListener('scroll', () => {
+        const nav = document.getElementById('main-navbar');
+        if (window.scrollY > 15) {
+          nav.className = 'fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-zinc-950/95 shadow-xl backdrop-blur-md py-3';
+        } else {
+          nav.className = 'fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-gradient-to-b from-black/80 to-transparent py-5';
+        }
+      });
+
+      // Calculate the active spotlight item (feature candidate)
+      function getFeaturedItem() {
+        const featuredList = mediaData.filter((item) => {
+          if (state.activeTab === 'all') return item.isFeatured;
+          if (state.activeTab === 'favorites') return state.favorites.includes(item.id);
+          return item.category === state.activeTab;
+        });
+
+        if (featuredList.length > 0) {
+          return featuredList.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))[0];
+        }
+
+        const backupList = mediaData.filter(item => state.activeTab === 'all' ? true : item.category === state.activeTab);
+        if (backupList.length > 0) {
+          return backupList[0];
+        }
+
+        return mediaData[0];
+      }
+
+      // Media Rows builder logic helper
+      function getRowItemsList(category, filterType, genreFilter) {
+        let items = mediaData;
+        
+        if (state.activeTab !== 'all' && state.activeTab !== 'favorites') {
+          items = items.filter(item => item.category === state.activeTab);
+        }
+
+        if (category !== 'all') {
+          items = items.filter(item => item.category === category);
+        }
+
+        if (filterType === 'trending') {
+          return items.filter(item => item.isTrending);
+        }
+
+        if (filterType === 'new-releases') {
+          return items.filter(item => item.isNewRelease);
+        }
+
+        if (filterType === 'genre' && genreFilter) {
+          return items.filter(item => item.genres.includes(genreFilter));
+        }
+
+        return items;
+      }
+
+      // Dynamic Media Row Scrolling
+      window.scrollMediaRow = function(titleId, direction) {
+        const row = document.getElementById(`row-scroll-${titleId}`);
+        if (row) {
+          const scrollAmount = direction === 'left' ? -row.clientWidth * 0.75 : row.clientWidth * 0.75;
+          row.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+      }
+
+      function updateRowButtonsVisibility(titleId) {
+        const row = document.getElementById(`row-scroll-${titleId}`);
+        const leftBtn = document.getElementById(`left-scroll-${titleId}`);
+        const rightBtn = document.getElementById(`right-scroll-${titleId}`);
+        if (row) {
+          const { scrollLeft, scrollWidth, clientWidth } = row;
+          if (leftBtn) {
+            if (scrollLeft > 5) leftBtn.classList.remove('hidden-arrow-force', 'opacity-0');
+            else leftBtn.classList.add('hidden-arrow-force', 'opacity-0');
+          }
+          if (rightBtn) {
+            if (scrollLeft < scrollWidth - clientWidth - 5) rightBtn.classList.remove('opacity-0');
+            else rightBtn.classList.add('opacity-0');
+          }
+        }
+      }
+
+      // Card rendering template
+      function createMovieCardHTML(movie) {
+        const isFav = state.favorites.includes(movie.id);
+        const matchPercent = Math.round(parseFloat(movie.rating) * 10);
+        return `
+          <div
+            id="card-${movie.id}"
+            onclick="openModal('${movie.id}')"
+            class="group relative flex-none w-[160px] sm:w-[200px] md:w-[240px] aspect-[2/3] sm:aspect-video rounded-sm overflow-hidden bg-[#222] cursor-pointer shadow-md transition-all duration-300 hover:scale-105 hover:z-30 hover:shadow-2xl hover:shadow-black/70 select-none"
+          >
+            <img
+              src="${movie.backdropUrl || movie.posterUrl}"
+              alt="${movie.title}"
+              class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 rounded-sm"
+              referrerpolicy="no-referrer"
+              loading="lazy"
+            />
+            <!-- Overlay and operations buttons -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/85 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-3 sm:p-4">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center space-x-2">
+                  <button
+                    onclick="event.stopPropagation(); openModal('${movie.id}', true)"
+                    class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-115 active:scale-90 transition-transform"
+                    title="Play Now"
+                  >
+                    <i data-lucide="play" class="w-3.5 h-3.5 fill-black text-black ml-0.5"></i>
+                  </button>
+                  <button
+                    onclick="event.stopPropagation(); toggleFavorite('${movie.id}')"
+                    class="w-8 h-8 rounded-full flex items-center justify-center border transition-all ${
+                      isFav
+                        ? 'bg-[#E50914] text-white border-[#E50914]'
+                        : 'bg-black/60 text-white border-zinc-500 hover:border-white hover:bg-zinc-800'
+                    }"
+                    title="${isFav ? 'Remove from My List' : 'Add to My List'}"
+                  >
+                    <i data-lucide="${isFav ? 'check' : 'plus'}" class="w-4 h-4"></i>
+                  </button>
+                </div>
+                <button onclick="event.stopPropagation(); openModal('${movie.id}')" class="text-[10px] uppercase font-bold bg-[#333] hover:bg-[#444] text-white px-2.5 py-1 rounded-sm border border-zinc-700">
+                  Info
+                </button>
+              </div>
+              <h3 class="text-sm md:text-base font-black text-white mb-1.5 truncate">${movie.title}</h3>
+              <div class="flex items-center space-x-2 text-[10px] md:text-xs text-zinc-300 font-semibold">
+                <span class="text-green-400 font-extrabold">${matchPercent}% Match</span>
+                <span>•</span>
+                <span>${movie.releaseYear}</span>
+                <span>•</span>
+                <span class="text-[9px] bg-[#222] px-1.5 py-0.2 rounded-sm border border-zinc-805 uppercase font-black text-[#E50914]">
+                  ${movie.category === 'tv-show' ? 'TV' : movie.category}
+                </span>
+              </div>
+            </div>
+            <div class="absolute top-2 right-2 bg-black/80 px-2 py-0.5 rounded-sm text-[9px] font-black text-[#E50914] uppercase tracking-widest pointer-events-none group-hover:opacity-0 transition-opacity">
+              ${movie.category === 'tv-show' ? 'Series' : movie.category}
+            </div>
+          </div>
+        `;
+      }
+
+      // Generate HTML row structure
+      function createMediaRowHTML(title, moviesList) {
+        if (!moviesList || moviesList.length === 0) return '';
+        const rowId = title.replace(/\s+/g, '-').toLowerCase();
+        
+        return `
+          <div id="row-section-${rowId}" class="relative space-y-2 px-4 md:px-8 py-4 group/row select-none">
+            <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight hover:text-red-500 transition-colors w-max cursor-pointer">
+              ${title} <span class="text-zinc-500 text-xs font-normal ml-2">Browse All &rarr;</span>
+            </h2>
+            <div class="relative">
+              <!-- Left Arrow -->
+              <button
+                id="left-scroll-${rowId}"
+                onclick="scrollMediaRow('${rowId}', 'left')"
+                class="absolute left-0 top-1/2 -translate-y-1/2 h-[75%] w-10 sm:w-12 bg-black/80 hover:bg-black/95 text-white flex items-center justify-center z-40 rounded-r-lg opacity-0 group-hover/row:opacity-100 transition-opacity duration-350 border-y border-r border-zinc-800 cursor-pointer"
+              >
+                <i data-lucide="chevron-left" class="w-7 h-7 hover:scale-120 transition-transform"></i>
+              </button>
+
+              <!-- Scroll Area -->
+              <div
+                id="row-scroll-${rowId}"
+                onscroll="updateRowButtonsVisibility('${rowId}')"
+                class="flex items-center space-x-4 overflow-x-auto pb-4 scrollbar-none scroll-smooth snap-x snap-mandatory"
+              >
+                ${moviesList.map(movie => createMovieCardHTML(movie)).join('')}
+              </div>
+
+              <!-- Right Arrow -->
+              <button
+                id="right-scroll-${rowId}"
+                onclick="scrollMediaRow('${rowId}', 'right')"
+                class="absolute right-0 top-1/2 -translate-y-1/2 h-[75%] w-10 sm:w-12 bg-black/80 hover:bg-black/95 text-white flex items-center justify-center z-40 rounded-l-lg opacity-0 group-hover/row:opacity-100 transition-opacity duration-350 border-y border-l border-zinc-800 cursor-pointer"
+              >
+                <i data-lucide="chevron-right" class="w-7 h-7 hover:scale-120 transition-transform"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // Render Dashboard Content (Search or category-based landing)
+      function renderSearchOrHome() {
+        const container = document.getElementById('main-content-area');
+        container.innerHTML = '';
+
+        // SEARCH CASE
+        if (state.searchQuery) {
+          const query = state.searchQuery.toLowerCase();
+          const filtered = mediaData.filter(item => 
+            item.title.toLowerCase().includes(query) ||
+            item.genres.some(g => g.toLowerCase().includes(query)) ||
+            item.description.toLowerCase().includes(query)
+          );
+
+          let searchHTML = `
+            <div class="max-w-7xl mx-auto px-6 md:px-12 pt-24 md:pt-28 animate-fade-in">
+              <h1 class="text-2xl sm:text-3xl font-black tracking-tight mb-6">
+                Search Results for: <span class="text-[#E50914]">"${state.searchQuery}"</span>
+              </h1>
+          `;
+
+          if (filtered.length > 0) {
+            searchHTML += `
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                ${filtered.map(movie => createMovieCardHTML(movie)).join('')}
+              </div>
+            `;
+          } else {
+            searchHTML += `
+              <div class="flex flex-col items-center justify-center py-20 text-center">
+                <i data-lucide="alert-circle" class="text-zinc-650 w-12 h-12 mb-4"></i>
+                <p class="text-zinc-400 text-lg font-bold">No titles match your query.</p>
+                <p class="text-zinc-600 text-sm mt-1">Try searching for other tags, categories, or genres.</p>
+              </div>
+            `;
+          }
+          searchHTML += '</div>';
+          container.innerHTML = searchHTML;
+          lucide.createIcons();
+          return;
+        }
+
+        // FAVORITES VIEW CASE
+        if (state.activeTab === 'favorites') {
+          const favoriteMovies = mediaData.filter(item => state.favorites.includes(item.id));
+          let favHTML = `
+            <div class="max-w-7xl mx-auto px-6 md:px-12 pt-24 md:pt-28 animate-fade-in">
+              <h1 class="text-2xl sm:text-4xl font-black mb-1 tracking-tight">My List</h1>
+              <p class="text-zinc-500 text-xs sm:text-sm mb-8">Your saved favorites, stored locally in the browser.</p>
+          `;
+
+          if (favoriteMovies.length > 0) {
+            favHTML += `
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                ${favoriteMovies.map(movie => createMovieCardHTML(movie)).join('')}
+              </div>
+            `;
+          } else {
+            favHTML += `
+              <div class="flex flex-col items-center justify-center py-24 text-center select-none bg-zinc-900/10 rounded-sm border border-zinc-800 p-6 md:p-12">
+                <i data-lucide="heart" class="text-zinc-700 w-12 h-12 mb-4"></i>
+                <h3 class="text-zinc-300 font-black text-lg">Your list is currently empty</h3>
+                <p class="text-zinc-500 text-sm max-w-sm mt-2 leading-relaxed">
+                  Tap the Heart or Add icon on any movie, show, or trailer card to keep track of items you want to watch.
+                </p>
+                <button
+                  onclick="setTab('all')"
+                  class="mt-6 bg-[#E50914] hover:bg-red-700 text-white text-xs font-extrabold px-8 py-3 rounded-sm transition-colors cursor-pointer"
+                >
+                  Explore Home Catalog
+                </button>
+              </div>
+            `;
+          }
+          favHTML += '</div>';
+          container.innerHTML = favHTML;
+          lucide.createIcons();
+          return;
+        }
+
+        // BACKDROP HERO LANDING (FOR TABS: ALL / TV / MOVIE / ANIME / TRAILERS)
+        const spotlightItem = getFeaturedItem();
+        let htmlContent = '';
+
+        if (spotlightItem) {
+          const isFav = state.favorites.includes(spotlightItem.id);
+          const matchPercent = Math.round(parseFloat(spotlightItem.rating) * 10);
+          
+          htmlContent += `
+            <div id="hero-banner" class="relative h-[72vh] md:h-[85vh] w-full flex items-center justify-start overflow-hidden bg-[#141414] select-none">
+              <div class="absolute inset-0 w-full h-full">
+                <img
+                  src="${spotlightItem.backdropUrl}"
+                  alt="${spotlightItem.title}"
+                  class="w-full h-full object-cover object-center filter brightness-[0.55] transition-all duration-1000"
+                  referrerpolicy="no-referrer"
+                />
+                <!-- Cinema Vibe Mask styling -->
+                <div class="absolute inset-0 z-10" style="background-image: linear-gradient(to right, #141414 12%, rgba(20,20,20,0.45) 55%, transparent 85%), linear-gradient(to top, #141414 6%, rgba(20,20,20,0.1) 40%, transparent 90%);"></div>
+              </div>
+
+              <!-- Content panel -->
+              <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-12 w-full flex flex-col items-start pt-[90px] md:pt-[110px]">
+                <div class="flex items-center space-x-3 mb-3 md:mb-4 text-xs sm:text-sm">
+                  <span class="text-red-500 uppercase tracking-[0.2em] font-extrabold text-[10px] md:text-xs">
+                    NETFLIX ORIGINAL ${spotlightItem.category.toUpperCase().replace('-', ' ')}
+                  </span>
+                  <span class="text-zinc-500 font-bold">•</span>
+                  <span class="text-green-400 font-extrabold">${matchPercent}% Match</span>
+                  <span class="text-zinc-300 font-medium">${spotlightItem.releaseYear}</span>
+                  <span class="border border-zinc-600 px-1.5 py-0.2 text-[10px] text-zinc-300 font-bold rounded">TV-MA</span>
+                  <span class="bg-zinc-800/60 text-zinc-300 px-2 py-0.5 text-xs rounded font-medium">${spotlightItem.duration}</span>
+                </div>
+
+                <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-7xl font-sans font-black text-white tracking-tight leading-none mb-4 max-w-xl md:max-w-3xl drop-shadow-xl">
+                  ${spotlightItem.title.toUpperCase()}
+                </h1>
+
+                <p class="text-[#e5e5e5] text-sm sm:text-base md:text-lg leading-relaxed mb-6 max-w-lg md:max-w-2xl font-medium">
+                  ${spotlightItem.description}
+                </p>
+
+                <!-- Genres Tags mapping -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                  ${spotlightItem.genres.map(genre => `
+                    <span class="text-xs bg-[#2f2f2f]/80 backdrop-blur-sm text-zinc-200 font-semibold px-3.5 py-1 rounded-sm border border-zinc-800">
+                      ${genre}
+                    </span>
+                  `).join('')}
+                </div>
+
+                <!-- Action Button rows -->
+                <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                  <button onclick="openModal('${spotlightItem.id}', true)" class="flex items-center space-x-2 bg-white hover:bg-white/90 active:scale-95 text-black font-extrabold px-6 sm:px-8 py-3 rounded shadow-lg transition-all duration-200 cursor-pointer text-sm sm:text-base">
+                    <i data-lucide="play" class="w-5 h-5 fill-black text-black"></i>
+                    <span>Play</span>
+                  </button>
+
+                  <button onclick="openModal('${spotlightItem.id}')" class="flex items-center space-x-2 bg-zinc-500/75 hover:bg-zinc-500/55 active:scale-95 text-white font-bold px-5 sm:px-7 py-3 rounded backdrop-blur-md border border-zinc-600/30 transition-all duration-200 cursor-pointer text-sm sm:text-base">
+                    <i data-lucide="info" class="w-5 h-5"></i>
+                    <span>More Info</span>
+                  </button>
+
+                  <button onclick="toggleFavorite('${spotlightItem.id}')" class="p-3 rounded border transition-all duration-200 cursor-pointer ${
+                    isFav
+                      ? 'bg-red-600 text-white border-red-600 hover:bg-red-700'
+                      : 'bg-black/40 text-zinc-200 border-zinc-650 hover:bg-white/10'
+                  }">
+                    <i data-lucide="${isFav ? 'check' : 'plus'}" class="w-5.5 h-5.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // HORIZONTAL ROWS INJECTION DRAW BY SECTION DEFINITIONS
+        htmlContent += `<div class="space-y-8 -mt-8 md:-mt-16 relative z-30">`;
+
+        if (state.activeTab === 'all') {
+          htmlContent += createMediaRowHTML("Trending Now", getRowItemsList('all', 'trending'));
+          htmlContent += createMediaRowHTML("Top Anime Hit Row", getRowItemsList('anime'));
+          htmlContent += createMediaRowHTML("Movies Selection", getRowItemsList('movie'));
+          htmlContent += createMediaRowHTML("Popular TV Shows", getRowItemsList('tv-show'));
+          htmlContent += createMediaRowHTML("Official Trailers & Sneak Previews", getRowItemsList('trailer'));
+        }
+
+        if (state.activeTab === 'anime') {
+          htmlContent += createMediaRowHTML("Trending Anime Series", getRowItemsList('anime', 'trending'));
+          htmlContent += createMediaRowHTML("Action & Supernatural", getRowItemsList('anime', 'genre', 'Action'));
+          htmlContent += createMediaRowHTML("New Releases", getRowItemsList('anime', 'new-releases'));
+        }
+
+        if (state.activeTab === 'tv-show') {
+          htmlContent += createMediaRowHTML("Trending TV Series", getRowItemsList('tv-show', 'trending'));
+          htmlContent += createMediaRowHTML("Sci-Fi & Mystery", getRowItemsList('tv-show', 'genre', 'Sci-Fi'));
+          htmlContent += createMediaRowHTML("Fantasy Collections", getRowItemsList('tv-show', 'genre', 'Fantasy'));
+        }
+
+        if (state.activeTab === 'movie') {
+          htmlContent += createMediaRowHTML("Trending Movies", getRowItemsList('movie', 'trending'));
+          htmlContent += createMediaRowHTML("Sci-Fi Blockbusters", getRowItemsList('movie', 'genre', 'Sci-Fi'));
+          htmlContent += createMediaRowHTML("Adventure & Drama", getRowItemsList('movie', 'genre', 'Adventure'));
+        }
+
+        if (state.activeTab === 'trailer') {
+          htmlContent += createMediaRowHTML("Official Previews", getRowItemsList('trailer'));
+          htmlContent += createMediaRowHTML("Trending Releases", getRowItemsList('trailer', 'trending'));
+        }
+
+        htmlContent += `</div>`;
+        container.innerHTML = htmlContent;
+        
+        // Trigger lucide dynamically
+        lucide.createIcons();
+
+        // Check arrow scroll statuses initialized
+        setTimeout(() => {
+          const sections = ["trending", "anime", "movie-selection", "popular-tv-shows", "official-trailers-&-sneak-previews", "official-previews", "trending-releases", "trending-anime-series", "action-&-supernatural", "new-releases", "trending-tv-series", "sci-fi-&-mystery", "fantasy-collections", "trending-movies", "sci-fi-blockbusters", "adventure-&-drama"];
+          sections.forEach(secTitle => {
+            updateRowButtonsVisibility(secTitle);
+          });
+        }, 100);
+      }
+
+      // MODAL OVERLAY PORTAL SYSTEM
+      window.openModal = function(movieId, autoplay = false) {
+        const item = mediaData.find(m => m.id === movieId);
+        if (!item) return;
+
+        state.selectedMovie = item;
+        state.activeSeasonNumber = 1;
+        state.activeEpisode = null;
+
+        // Reset display widgets
+        const iframe = document.getElementById('player-iframe');
+        const fallback = document.getElementById('player-fallback-view');
+        iframe.src = "";
+        iframe.classList.add('hidden');
+        fallback.classList.remove('hidden');
+
+        // Setup base meta
+        document.getElementById('modal-movie-title-header').textContent = item.title;
+        document.getElementById('modal-description-body').textContent = item.description;
+        document.getElementById('modal-year-label').textContent = item.releaseYear;
+        document.getElementById('modal-duration-label').textContent = item.duration;
+        document.getElementById('modal-category-badge').textContent = item.category.replace('-', ' ').toUpperCase();
+        document.getElementById('modal-match-percentage').textContent = `${Math.round(parseFloat(item.rating) * 10)}% Match`;
+
+        // Load Genres List
+        const genresContainer = document.getElementById('modal-genres-list');
+        genresContainer.innerHTML = item.genres.map(g => `
+          <span class="text-xs bg-[#222]/80 text-zinc-450 px-3 py-1 rounded-sm border border-zinc-800">${g}</span>
+        `).join('');
+
+        // Update Favorites Button inside Modal
+        updateModalFavoriteBtn();
+
+        // Setup Series / Episode selectors drawer
+        const rightContainer = document.getElementById('modal-right-episode-control-wrapper');
+        rightContainer.innerHTML = '';
+
+        if (item.type === 'series' && item.seasons && item.seasons.length > 0) {
+          // It's an episodic series (anime/tv series)
+          let seasonsHTML = `
+            <div class="space-y-4">
+              <div class="flex items-center gap-2 border-b border-zinc-900 pb-3">
+                <i data-lucide="list-ordered" class="text-[#E50914] w-[18px] h-[18px]"></i>
+                <h3 class="text-sm uppercase tracking-wider font-extrabold text-zinc-300">Season & Episode Selection</h3>
+              </div>
+              <div class="space-y-2">
+                <label class="text-[10px] text-zinc-500 font-extrabold uppercase tracking-widest">Choose Season</label>
+                <div class="flex flex-wrap gap-2">
+          `;
+
+          item.seasons.forEach(s => {
+            seasonsHTML += `
+              <button
+                id="modal-season-btn-${s.seasonNumber}"
+                onclick="changeSeason(${s.seasonNumber})"
+                class="px-3.5 py-1.5 rounded-sm font-extrabold text-xs transition-all cursor-pointer border ${
+                  s.seasonNumber === state.activeSeasonNumber
+                    ? 'bg-[#E50914] text-white shadow-md border-[#E50914]/50'
+                    : 'bg-[#222] text-zinc-400 hover:text-zinc-200 border-zinc-800'
+                }"
+              >
+                Season ${s.seasonNumber}
+              </button>
+            `;
+          });
+
+          seasonsHTML += `
+                </div>
+              </div>
+              <div class="space-y-2 mt-4 pt-1">
+                <label id="modal-episode-badge-label" class="text-[10px] text-zinc-500 font-extrabold uppercase tracking-widest block">Choose Episode</label>
+                <div id="modal-episode-items-scroller" class="space-y-2 overflow-y-auto max-h-[220px] rounded-sm border border-zinc-800 p-2 bg-[#121212]/80 pr-1 scrollbar-thin scrollbar-thumb-zinc-805">
+                  <!-- Injected active season episodes -->
+                </div>
+              </div>
+            </div>
+          `;
+          rightContainer.innerHTML = seasonsHTML;
+          populateEpisodesList();
+        } else {
+          // Direct direct film play layout
+          rightContainer.innerHTML = `
+            <div class="bg-[#222]/45 p-4 rounded-sm border border-zinc-805 text-center space-y-2.5">
+              <i data-lucide="film" class="text-zinc-700 mx-auto w-7 h-7"></i>
+              <h4 class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Single Direct Play</h4>
+              <p class="text-zinc-500 text-xs leading-relaxed">
+                This selection is compiled format as a full cinematic release or trailer preview and does not contain episodic parts.
+              </p>
+            </div>
+          `;
+        }
+
+        // Active State Play triggers
+        if (autoplay || item.type !== 'series') {
+          if (item.type !== 'series') {
+            triggerIframePlay(item.iframeUrl, 'NOW PLAYING', item.title);
+          } else {
+            // Pick series S1:E1 by default
+            const firstSeason = item.seasons[0];
+            if (firstSeason && firstSeason.episodes && firstSeason.episodes[0]) {
+              playEpisode(1, firstSeason.episodes[0]);
+            }
+          }
+        }
+
+        // Show Modal backdrop
+        document.getElementById('modal-backdrop').classList.remove('hidden');
+        document.body.style.overflow = "hidden"; // disable body scrolling
+        lucide.createIcons();
+      }
+
+      window.closeModal = function() {
+        document.getElementById('modal-backdrop').classList.add('hidden');
+        document.getElementById('player-iframe').src = ""; // halt playing trailer
+        document.body.style.overflow = ""; // restore body scrolling
+        state.selectedMovie = null;
+      }
+
+      function updateModalFavoriteBtn() {
+        const btn = document.getElementById('modal-favorites-toggle-btn');
+        if (!btn || !state.selectedMovie) return;
+        const isFav = state.favorites.includes(state.selectedMovie.id);
+        
+        btn.onclick = () => toggleFavorite(state.selectedMovie.id);
+        
+        if (isFav) {
+          btn.className = 'flex items-center space-x-2 px-5 py-2.5 rounded-sm border font-bold text-sm transition-all cursor-pointer bg-[#E50914] text-white border-[#E50914] hover:bg-red-750';
+          btn.innerHTML = '<i data-lucide="heart" class="w-4 h-4 fill-white mr-1"></i><span>In My List</span>';
+        } else {
+          btn.className = 'flex items-center space-x-2 px-5 py-2.5 rounded-sm border font-bold text-sm transition-all cursor-pointer bg-[#222] text-zinc-350 border-[#333] hover:border-zinc-600 hover:text-white hover:bg-zinc-800';
+          btn.innerHTML = '<i data-lucide="heart" class="w-4 h-4 mr-1"></i><span>Add to My List</span>';
+        }
+        lucide.createIcons();
+      }
+
+      window.changeSeason = function(seasonNum) {
+        state.activeSeasonNumber = seasonNum;
+        
+        // Toggle season buttons classes
+        const seasonButtons = document.querySelectorAll('[id^="modal-season-btn-"]');
+        seasonButtons.forEach(btn => {
+          const sNum = parseInt(btn.id.replace('modal-season-btn-', ''));
+          if (sNum === seasonNum) {
+            btn.className = 'px-3.5 py-1.5 rounded-sm font-extrabold text-xs transition-all cursor-pointer border bg-[#E50914] text-white shadow-md border-[#E50914]/50';
+          } else {
+            btn.className = 'px-3.5 py-1.5 rounded-sm font-extrabold text-xs transition-all cursor-pointer border bg-[#222] text-zinc-400 hover:text-zinc-200 border-zinc-800';
+          }
+        });
+        
+        populateEpisodesList();
+      }
+
+      function populateEpisodesList() {
+        const item = state.selectedMovie;
+        const listScroller = document.getElementById('modal-episode-items-scroller');
+        if (!item || !listScroller) return;
+
+        const activeSeasonData = item.seasons.find(s => s.seasonNumber === state.activeSeasonNumber);
+        if (!activeSeasonData) return;
+
+        document.getElementById('modal-episode-badge-label').textContent = `Choose Episode (${activeSeasonData.episodes.length})`;
+
+        listScroller.innerHTML = activeSeasonData.episodes.map(ep => {
+          const isPlaying = state.activeEpisode && state.activeEpisode.episodeNumber === ep.episodeNumber && state.activeSeasonNumber === state.activeSeasonNumber; // Wait, check matching
+          
+          return `
+            <button
+              onclick="playEpisode(${state.activeSeasonNumber}, ${JSON.stringify(ep).replace(/"/g, '&quot;')})"
+              class="w-full flex items-center justify-between p-2.5 rounded-sm text-left transition-all text-xs cursor-pointer ${
+                isPlaying
+                  ? 'bg-[#E50914]/15 hover:bg-[#E50914]/20 border border-[#E50914]/40 text-white font-bold'
+                  : 'bg-[#1c1c1c]/90 hover:bg-[#252525] border border-zinc-900 text-zinc-400 hover:text-zinc-200'
+              }"
+            >
+              <div class="flex items-center space-x-3 overflow-hidden">
+                <span class="font-black tracking-wide shrink-0 ${isPlaying ? 'text-[#E50914]' : 'text-zinc-500'}">
+                  ${ep.episodeNumber < 10 ? '0' + ep.episodeNumber : ep.episodeNumber}
+                </span>
+                <span class="font-semibold truncate pr-2">${ep.title}</span>
+              </div>
+              <div class="shrink-0">
+                ${isPlaying ? `
+                  <span class="text-[9px] bg-[#E50914]/30 border border-[#E50914]/40 text-red-400 px-1.5 py-0.5 rounded-sm uppercase font-bold tracking-wider animate-pulse">
+                    LIVE
+                  </span>` : `
+                  <i data-lucide="play" class="w-3 h-3 text-zinc-500 fill-zinc-500"></i>
+                `}
+              </div>
+            </button>
+          `;
+        }).join('');
+        lucide.createIcons();
+      }
+
+      window.playEpisode = function(seasonNum, ep) {
+        state.activeEpisode = ep;
+        
+        // Re-populate list to update current active item styles representation state
+        populateEpisodesList();
+
+        const statusLabel = `PLAYING S${seasonNum}:E${ep.episodeNumber}`;
+        triggerIframePlay(ep.iframeUrl, statusLabel, ep.title);
+      }
+
+      function triggerIframePlay(iframeUrl, hudLabel, videoTitle) {
+        const iframe = document.getElementById('player-iframe');
+        const fallback = document.getElementById('player-fallback-view');
+        
+        iframe.src = iframeUrl;
+        iframe.classList.remove('hidden');
+        fallback.classList.add('hidden');
+
+        // Update match HUD
+        document.getElementById('hud-status-match-label').textContent = hudLabel;
+        document.getElementById('hud-playing-title-label').textContent = videoTitle;
+      }
+
+      // CLOSE WINDOW on ESC key
+      window.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+          closeModal();
+        }
+      });
+
+      // INITIAL APPLICATION LIFECYCLE SEED OUT
+      loadFavorites();
+      renderNavigation();
+      renderSearchOrHome();
+    </script>
+  </body>
+</html>
