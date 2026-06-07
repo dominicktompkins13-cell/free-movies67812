@@ -1,20 +1,50 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Netflix Hub - Streaming Portal 🍿
 
-# Run and deploy your AI Studio app
+An elegant, fully-featured Netflix-inspired streaming portal. 
 
-This contains everything you need to run your app locally.
+## 🎬 Main Features
+- **Cinematic Hero Carousel**: High-quality trailer spotlight, matching algorithms, dynamic genres, and clean CTA actions.
+- **Episodic Contents Navigation**: Detailed drawer for TV Series, Anime, & Trailers containing interactive Season and Episode lists.
+- **Sleek Horizontal Categorized Rows**: Direct-scroll rows for Trending items, Top anime hits, Action Movies, and TV Shows.
+- **Unified Global Search**: Instantly filter your favorite titles, genres, descriptions, and tags.
+- **Interactive Local Favorites List ("My List")**: Handcrafted offline favorites bookmarking persisted across browser sessions utilizing `localStorage`.
+- **Responsive Layout**: Designed first for touch and custom desktop viewing with an elegant Netflix-style color scheme.
 
-View your app in AI Studio: https://ai.studio/apps/89e352e6-3480-4009-9195-787f9b6c348d
+---
 
-## Run Locally
+## 🛠️ Development & Local Run
 
-**Prerequisites:**  Node.js
+To run the application locally on your computer:
 
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+2. **Run dev server**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Build optimized production code**:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 🚀 GitHub Pages Automated Deployment
+
+This repository includes an automated GitHub Actions deployment workflow. Whenever you push code to the `main` or `master` branch:
+
+1. A GitHub runner will checkout your repository.
+2. Build the optimized production assets for React/Vite.
+3. Publish and deploy them automatically to a `gh-pages` branch.
+
+### 🌐 Setup Instructions:
+1. Go to your repository settings on GitHub.
+2. Navigate to **Pages** (under the Code and automation section).
+3. Under **Build and deployment**, ensure your **Source** is set to **Deploy from a branch**.
+4. Choose the **`gh-pages`** branch and the **`/ (root)`** folder.
+5. Save, and your live site will be ready at: \
+   `https://<your-username>.github.io/<your-repository-name>/`
